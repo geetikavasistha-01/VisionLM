@@ -337,8 +337,6 @@ const StudioSidebar = ({
         </div>
       </ScrollArea>
     </div>;
-  };
+};
 
 export default StudioSidebar;
-
-}
