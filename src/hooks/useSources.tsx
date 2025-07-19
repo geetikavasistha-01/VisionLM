@@ -149,26 +149,15 @@ export const useSources = (notebookId?: string) => {
         if (notebook?.generation_status === 'pending') {
           console.log('Triggering notebook content generation...');
           
-          // Determine if we can trigger generation based on source type and available data
-          const canGenerate = 
-            (newSource.type === 'pdf' && newSource.file_path) ||
-            (newSource.type === 'text' && newSource.content) ||
-            (newSource.type === 'website' && newSource.url) ||
-            (newSource.type === 'youtube' && newSource.url) ||
-            (newSource.type === 'audio' && newSource.file_path);
-          
-          if (canGenerate) {
-            try {
-              await generateNotebookContentAsync({
-                notebookId,
-                filePath: newSource.file_path || newSource.url,
-                sourceType: newSource.type
-              });
-            } catch (error) {
-              console.error('Failed to generate notebook content:', error);
-            }
-          } else {
-            console.log('Source not ready for generation yet - missing required data');
+          // Always try to trigger generation for the first source
+          try {
+            await generateNotebookContentAsync({
+              notebookId,
+              filePath: newSource.file_path || newSource.url,
+              sourceType: newSource.type
+            });
+          } catch (error) {
+            console.error('Failed to generate notebook content:', error);
           }
         }
       }
@@ -209,7 +198,7 @@ export const useSources = (notebookId?: string) => {
             .eq('id', notebookId)
             .single();
           
-          if (notebook?.generation_status === 'pending') {
+          if (notebook?.generation_status === 'pending' || notebook?.generation_status === 'generating') {
             console.log('File path updated, triggering notebook content generation...');
             
             try {

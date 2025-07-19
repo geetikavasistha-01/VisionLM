@@ -57,8 +57,8 @@ const ChatArea = ({
   // Check if at least one source has been successfully processed
   const hasProcessedSource = sources?.some(source => source.processing_status === 'completed') || false;
 
-  // Chat should be disabled if there are no processed sources
-  const isChatDisabled = !hasProcessedSource;
+  // Chat should be disabled if there are no processed sources OR if notebook is still generating
+  const isChatDisabled = !hasProcessedSource || isGenerating;
 
   // Track when we send a message to show loading state
   const [lastMessageCount, setLastMessageCount] = useState(0);

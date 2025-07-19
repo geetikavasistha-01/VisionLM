@@ -37,10 +37,13 @@ export const useNotebookGeneration = () => {
       queryClient.invalidateQueries({ queryKey: ['notebooks'] });
       queryClient.invalidateQueries({ queryKey: ['notebook'] });
       
-      toast({
-        title: "Content Generated",
-        description: "Notebook title and description have been generated successfully.",
-      });
+      // Only show success toast if we actually got content back
+      if (data?.title) {
+        toast({
+          title: "Content Generated",
+          description: "Notebook title and description have been generated successfully.",
+        });
+      }
     },
     onError: (error) => {
       console.error('Notebook generation failed:', error);

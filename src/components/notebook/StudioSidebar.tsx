@@ -59,6 +59,9 @@ const StudioSidebar = ({
   // Check if at least one source has been successfully processed
   const hasProcessedSource = sources?.some(source => source.processing_status === 'completed') || false;
 
+  // Also check if notebook generation is complete
+  const isNotebookReady = notebook?.generation_status === 'completed' && hasProcessedSource;
+
   // Auto-refresh expired URLs
   useEffect(() => {
     if (!notebookId || !notebook?.audio_overview_url) return;
@@ -271,6 +274,7 @@ const StudioSidebar = ({
               
               <div className="flex space-x-2">
                 <Button size="sm" onClick={handleGenerateAudio} disabled={isGenerating || currentStatus === 'generating' || !hasProcessedSource || isAutoRefreshing} className="flex-1 text-white bg-slate-900 hover:bg-slate-800">
+                <Button size="sm" onClick={handleGenerateAudio} disabled={isGenerating || currentStatus === 'generating' || !isNotebookReady || isAutoRefreshing} className="flex-1 text-white bg-slate-900 hover:bg-slate-800">
                   {isGenerating || currentStatus === 'generating' ? <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       Generating...

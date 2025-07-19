@@ -272,7 +272,7 @@ const AddSourcesDialog = ({
         title,
         type: 'text',
         content,
-        processing_status: 'processing',
+        processing_status: 'completed',
         metadata: {
           characterCount: content.length,
           webhookProcessed: true
